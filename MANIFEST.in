@@ -1,0 +1,5 @@
+include src/pythonic_core.cpp
+include pythonic_core.pyi
+include README.md LICENSE
+graft src
+global-include CMakeLists.txt *.cmake
