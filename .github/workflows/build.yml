@@ -42,10 +42,6 @@ jobs:
           choco install postgresql --params '/Password:password'
           choco install sqlite
 
-      - name: Configure build environment
-        run: |
-          echo "CIBW_ENVIRONMENT='CXXFLAGS=-fPIC CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib'" >> $GITHUB_ENV
-
       - uses: pypa/cibuildwheel@v2.17
         env:
           CIBW_ARCHS_MACOS: auto universal2
