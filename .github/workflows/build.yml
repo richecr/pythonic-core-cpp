@@ -55,7 +55,6 @@ jobs:
           CIBW_ENVIRONMENT_LINUX: >
             CXXFLAGS=-fPIC
             CPPFLAGS=-I/usr/include/postgresql
-            LDFLAGS=-L/usr/lib/postgresql
           CIBW_ARCHS_MACOS: auto universal2
 
       - name: Upload wheels
