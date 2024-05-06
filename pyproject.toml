@@ -8,7 +8,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [[tool.cibuildwheel.overrides]]
-select = "cp311*"
+select = "cp3{9,10,11}-*"
 manylinux-x86_64-image = "manylinux2014"
 
 [tool.ruff]
