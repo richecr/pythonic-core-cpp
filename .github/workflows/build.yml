@@ -7,6 +7,9 @@ on:
   pull_request:
 
 jobs:
+  env:
+    CIBW_ENVIRONMENT_LINUX: CXXFLAGS=-fPIC;CPPFLAGS=-I/usr/local/include;LDFLAGS=-L/usr/local/lib
+
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
