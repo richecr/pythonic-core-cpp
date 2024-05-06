@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.8'
 
       - name: Install PyBind11
         run: pip install pybind11
@@ -29,6 +29,14 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libpq-dev libsqlite3-dev
+        
+      - name: List PostgreSQL header files
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ls -l /usr/include/postgresql
+
+      - name: List PostgreSQL library files
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ls -l /usr/lib/x86_64-linux-gnu
 
       - name: Install system dependencies
         if: startsWith(matrix.os, 'macos')
@@ -44,7 +52,10 @@ jobs:
 
       - uses: pypa/cibuildwheel@v2.17
         env:
-          CIBW_ENVIRONMENT_LINUX: CXXFLAGS=-fPIC CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib
+          CIBW_ENVIRONMENT_LINUX: >
+            CXXFLAGS=-fPIC
+            CPPFLAGS=-I/usr/include/postgresql
+            LDFLAGS=-L/usr/lib/postgresql
           CIBW_ARCHS_MACOS: auto universal2
 
       - name: Upload wheels
