@@ -50,7 +50,7 @@ jobs:
           echo "CIBW_ENVIRONMENT='CXXFLAGS=-fPIC CPPFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib'" >> $GITHUB_ENV
 
       - name: Build wheels
-        run: cibuildwheel --output-dir wheelhouse
+        uses: pypa/cibuildwheel@v2.17.0
 
       - name: Upload wheels
         uses: actions/upload-artifact@v2
