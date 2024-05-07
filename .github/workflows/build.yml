@@ -52,7 +52,7 @@ jobs:
 
       - uses: pypa/cibuildwheel@v2.17
         env:
-          CIBW_ARCHS_MACOS: auto universal2
+          CIBW_BUILD: 'cp38-cp312'
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
