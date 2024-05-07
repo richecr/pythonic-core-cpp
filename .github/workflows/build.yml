@@ -33,6 +33,10 @@ jobs:
       - name: List PostgreSQL header files
         if: startsWith(matrix.os, 'ubuntu')
         run: ls -l /usr/include/postgresql
+      
+      - name: Permission PostgreSQL header files
+        if: startsWith(matrix.os, 'ubuntu')
+        run: chmod +x /usr/include/postgresql/libpq-fe.h
 
       - name: List PostgreSQL library files
         if: startsWith(matrix.os, 'ubuntu')
