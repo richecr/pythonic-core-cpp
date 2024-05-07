@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.12'
 
       - name: Install PyBind11
         run: pip install pybind11
@@ -33,10 +33,6 @@ jobs:
       - name: List PostgreSQL header files
         if: startsWith(matrix.os, 'ubuntu')
         run: ls -l /usr/include/postgresql
-
-      - name: List PostgreSQL library files
-        if: startsWith(matrix.os, 'ubuntu')
-        run: ls -l /usr/lib/x86_64-linux-gnu
 
       - name: Install system dependencies
         if: startsWith(matrix.os, 'macos')
@@ -52,7 +48,7 @@ jobs:
 
       - uses: pypa/cibuildwheel@v2.17
         env:
-          CIBW_BUILD: 'cp38-cp312'
+          CIBW_BUILD: 'cp38-* cp39-* cp310-* cp311-* cp312-*'
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
