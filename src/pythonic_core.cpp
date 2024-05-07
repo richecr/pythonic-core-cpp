@@ -5,7 +5,7 @@
 #include <string>
 #include <regex>
 
-#include </usr/include/postgresql/libpq-fe.h>
+#include <libpq-fe.h>
 #include <sqlite3.h>
 
 namespace py = pybind11;
