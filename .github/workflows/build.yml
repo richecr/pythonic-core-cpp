@@ -1,0 +1,74 @@
+name: Build and Test Wheels
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  make_sdist:
+    name: Make SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Optional, use if you use setuptools_scm
+        submodules: true  # Optional, use if you have submodules
+
+    - name: Build SDist
+      run: pipx run build --sdist
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: cibw-sdist
+        path: dist/*.tar.gz
+
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: Install PyBind11
+        run: pip install pybind11
+
+      - name: Install system dependencies
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev libsqlite3-dev
+        
+      - name: List PostgreSQL header files
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ls -l /usr/include/postgresql
+
+      - name: Install system dependencies
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          brew install postgresql@12
+          brew install sqlite3
+
+      - name: Install system dependencies
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          choco install postgresql --params '/Password:password'
+          choco install sqlite
+
+      - uses: pypa/cibuildwheel@v2.17
+        env:
+          CIBW_BUILD: 'cp312-*'
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
